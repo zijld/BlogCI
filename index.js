@@ -6,12 +6,14 @@ const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 
 // Require all Models
-
+require('./models/Blog');
+require('./models/User');
 // Require passport service for authentication
+require('./services/passport');
 
 // Connects to MongoDB
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI, { useMongoClient: true });
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
 
 // Call express and create the app variable
 const app = express();
@@ -26,10 +28,12 @@ app.use(
   })
 );
 // Adds authentication to app
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Require all routes
+require('./routes/blogRoutes')(app);
+require('./routes/authRoutes')(app);
 
 // Checks if this app is running in production
 if (['production'].includes(process.env.NODE_ENV)) {
