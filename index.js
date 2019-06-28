@@ -10,6 +10,8 @@ require('./models/Blog');
 require('./models/User');
 // Require passport service for authentication
 require('./services/passport');
+// Resolve the caching when running query.exec
+require('./services/cache.js');
 
 // Connects to MongoDB
 mongoose.Promise = global.Promise;
