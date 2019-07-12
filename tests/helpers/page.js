@@ -43,7 +43,7 @@ class Page {
   }
 
   async getContentsOf(selector) {
-    return this.page.$eval(selector, el => el.innerHtml);
+    return this.page.$eval(selector, el => el.innerHTML);
   }
 }
 
