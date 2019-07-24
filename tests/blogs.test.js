@@ -17,10 +17,11 @@ describe('when logged in', () => {
     await page.click('a.btn-floating');
   });
 
-  test('can see blog create form', async () => {
+  test('can see blog create form', async done => {
     const label = await page.getContentsOf('form label');
 
     expect(label).toEqual('Blog Title');
+    done();
   });
 
   describe('And using valid inputs', () => {
@@ -30,13 +31,14 @@ describe('when logged in', () => {
       await page.click('form button[type="submit"]');
     });
 
-    test('submitting takes user to review screen', async () => {
+    test('submitting takes user to review screen', async done => {
       const text = await page.getContentsOf('h5');
 
       expect(text).toEqual('Please confirm your entries');
+      done();
     });
 
-    test('submitting then saving adds blog to index page', async () => {
+    test('submitting then saving adds blog to index page', async done => {
       await page.click('button.green');
       await page.waitFor('.card');
 
@@ -45,6 +47,7 @@ describe('when logged in', () => {
 
       expect(title).toEqual('My Title');
       expect(content).toEqual('My Content');
+      done();
     });
   });
 
