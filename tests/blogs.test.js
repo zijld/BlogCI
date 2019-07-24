@@ -2,19 +2,22 @@ const Page = require('./helpers/page');
 
 let page;
 
-beforeEach(async () => {
+beforeEach(async done => {
   page = await Page.build();
   await page.goto('http://localhost:3000');
+  done();
 });
 
-afterEach(async () => {
+afterEach(async done => {
   await page.close();
+  done();
 });
 
 describe('when logged in', () => {
-  beforeEach(async () => {
+  beforeEach(async done => {
     await page.login();
     await page.click('a.btn-floating');
+    done();
   });
 
   test('can see blog create form', async done => {
@@ -25,10 +28,11 @@ describe('when logged in', () => {
   });
 
   describe('And using valid inputs', () => {
-    beforeEach(async () => {
+    beforeEach(async done => {
       await page.type('.title input', 'My Title');
       await page.type('.content input', 'My Content');
       await page.click('form button[type="submit"]');
+      done();
     });
 
     test('submitting takes user to review screen', async done => {
@@ -56,12 +60,13 @@ describe('when logged in', () => {
       await page.click('form button[type="submit"]');
     });
 
-    test('the form shows an error message', async () => {
+    test('the form shows an error message', async done => {
       const titleError = await page.getContentsOf('.title .red-text');
       const contentError = await page.getContentsOf('.content .red-text');
 
       expect(titleError).toEqual('You must provide a value');
       expect(contentError).toEqual('You must provide a value');
+      done();
     });
   });
 });
@@ -82,11 +87,12 @@ describe('User is not logged in', () => {
     }
   ];
 
-  test('Blog related actions are prohibited', async () => {
+  test('Blog related actions are prohibited', async done => {
     const results = await page.execRequest(actions);
 
     for (let result of results) {
       expect(result).toEqual({ error: 'You must log in!' });
+      done();
     }
   });
 });
