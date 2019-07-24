@@ -1,6 +1,22 @@
+require('../models/User');
+
 const Page = require('./helpers/page');
+const keys = require('../config/keys');
+const mongoose = require('mongoose');
 
 let page;
+
+beforeAll(async () => {
+  mongoose.Promise = global.Promise;
+  mongoose.connect(keys.mongoURI, {
+    useNewUrlParser: true
+  });
+});
+
+afterAll(async done => {
+  await mongoose.disconnect();
+  done();
+});
 
 beforeEach(async done => {
   page = await Page.build();
