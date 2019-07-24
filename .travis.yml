@@ -12,7 +12,7 @@ cache:
     - node_modules
     - client/node_modules
 install:
-  - yarn
+  - npm install --no-optional
   - npm run build
 script:
   - nohup npm run start &
