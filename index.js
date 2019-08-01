@@ -36,6 +36,7 @@ app.use(passport.session());
 // Require all routes
 require('./routes/blogRoutes')(app);
 require('./routes/authRoutes')(app);
+require('./routes/uploadRoutes')(app);
 
 // Checks if this app is running in production
 if (['production', 'ci'].includes(process.env.NODE_ENV)) {
